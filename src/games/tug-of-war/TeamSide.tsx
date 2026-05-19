@@ -4,14 +4,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useSFX } from '../../hooks/useSFX';
 import type { TeamId, TeamState, TugQuestion } from './tugTypes';
 
-// Auto-dismissing feedback toast
-function FeedbackToast({ isCorrect, streak }: { isCorrect: boolean | null; streak: number }) {
+// Auto-dismissing feedback toast with answer display
+function FeedbackToast({ isCorrect, streak, correctAnswer }: { isCorrect: boolean | null; streak: number; correctAnswer?: string | number }) {
   const [show, setShow] = useState(isCorrect !== null);
   
   useEffect(() => {
     if (isCorrect !== null) {
       setShow(true);
-      const timer = setTimeout(() => setShow(false), 1200);
+      const timer = setTimeout(() => setShow(false), 2000);
       return () => clearTimeout(timer);
     }
   }, [isCorrect]);
@@ -31,14 +31,24 @@ function FeedbackToast({ isCorrect, streak }: { isCorrect: boolean | null; strea
             background: isCorrect
               ? 'linear-gradient(135deg,#008751,#00c97a)'
               : 'linear-gradient(135deg,#e74c3c,#c0392b)',
-            padding:'7px clamp(12px,2vw,18px)', borderRadius:20,
+            padding:'clamp(10px,2vh,16px) clamp(16px,3vw,24px)', borderRadius:20,
             fontFamily:"'Baloo 2',sans-serif", fontWeight:900,
-            fontSize:'clamp(0.7rem,1.6vw,0.9rem)', color:'white',
-            boxShadow:'0 4px 16px rgba(0,0,0,0.4)', whiteSpace:'nowrap' as const,
+            fontSize:'clamp(0.8rem,1.8vw,1rem)', color:'white',
+            boxShadow:'0 8px 24px rgba(0,0,0,0.5)',
+            backdropFilter:'blur(8px)',
+            textAlign:'center' as const,
+            maxWidth:'90%',
           }}>
-          {isCorrect
-            ? streak>=3 ? `🔥 x${streak} STREAK!` : '✅ Correct!'
-            : '❌ Wrong!'}
+          <div style={{fontWeight:900,fontSize:'1.1em',marginBottom:4}}>
+            {isCorrect
+              ? streak>=3 ? `🔥 x${streak} STREAK!` : '✅ Correct!'
+              : '❌ Wrong!'}
+          </div>
+          {correctAnswer !== undefined && (
+            <div style={{fontFamily:"'Nunito',sans-serif",fontSize:'0.85em',fontWeight:700,opacity:0.95}}>
+              Correct Answer: <strong>{correctAnswer}</strong>
+            </div>
+          )}
         </motion.div>
       )}
     </AnimatePresence>
@@ -59,6 +69,7 @@ interface Props {
   onKeypad: (d: string) => void;
   onClear: () => void;
   onSubmit: () => void;
+  correctAnswer?: string | number;
 }
 
 const ROWS = [['7','8','9'],['4','5','6'],['1','2','3'],['CLR','0','✓']];
@@ -67,7 +78,7 @@ export function TeamSide({
   teamId, teamName, color, teamState, question,
   timeLeft, totalTime, isActive,
   roundsWon, roundsNeeded,
-  onKeypad, onClear, onSubmit,
+  onKeypad, onClear, onSubmit, correctAnswer,
 }: Props) {
   const { play } = useSFX();
   const pct = (timeLeft / totalTime) * 100;
@@ -228,8 +239,8 @@ export function TeamSide({
         ))}
       </div>
 
-      {/* Feedback toast - Shows for 1.2s then auto-hides */}
-      <FeedbackToast isCorrect={teamState.lastAnswerCorrect} streak={teamState.streak}/>
+      {/* Feedback toast - Shows for 2s then auto-hides with correct answer */}
+      <FeedbackToast isCorrect={teamState.lastAnswerCorrect} streak={teamState.streak} correctAnswer={correctAnswer}/>
     </div>
   );
 }
