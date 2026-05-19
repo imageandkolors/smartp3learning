@@ -59,6 +59,13 @@ export function TugOfWarGame({ onGameComplete, onExit }: Props) {
     return () => { if (toastTimer.current) clearTimeout(toastTimer.current); };
   }, [state.toastVisible, state.toastMsg]);
 
+  // ── Time-based auto-submission (when time runs out) ────────────────────────
+  useEffect(() => {
+    if (state.phase === 'playing' && state.round.timeLeft <= 0) {
+      dispatch({ type: 'SUBMIT_ANSWER', team: state.round.activeTeam });
+    }
+  }, [state.round.timeLeft, state.phase]);
+
   // ── Audio feedback for answers ────────────────────────────────────────────
   useEffect(() => {
     if (state.phase === 'round-result') {
@@ -263,44 +270,48 @@ export function TugOfWarGame({ onGameComplete, onExit }: Props) {
         )}
       </motion.div>
 
-      {/* REDESIGNED: Vertical Stacked Layout - Active Team on Top, Inactive Below */}
+      {/* REDESIGNED: Side-by-Side Layout - Both Teams Visible Simultaneously */}
       <div style={{
-        flex:1, display:'flex', flexDirection:'column', gap:'clamp(10px,2vh,16px)',
+        flex:1, display:'flex', gap:'clamp(8px,1.5vw,16px)',
         padding:'clamp(10px,2vh,16px) clamp(10px,2vw,16px)',
         overflow:'hidden', minHeight:0,
       }}>
-        {/* Active Team Section (Larger, More Prominent) */}
-        <div style={{flex:1.2,minHeight:0}}>
+        {/* Team 1 (Blue) */}
+        <div style={{flex:1,minHeight:0,opacity:state.round.activeTeam==='team1'?1:0.55,transition:'opacity 0.4s'}}>
           <TeamSide
-            teamId={state.round.activeTeam} teamName={state.round.activeTeam==='team1' ? t1.name : t2.name} 
-            color={state.round.activeTeam==='team1' ? t1.color : t2.color}
-            teamState={state.round.activeTeam==='team1' ? state.teams.team1 : state.teams.team2}
+            teamId='team1' teamName={t1.name}
+            color={t1.color}
+            teamState={state.teams.team1}
             question={state.round.question}
             timeLeft={state.round.timeLeft} totalTime={state.settings.timePerQuestion}
-            isActive={true}
-            roundsWon={state.round.activeTeam==='team1' ? state.teams.team1.score : state.teams.team2.score} 
+            isActive={state.round.activeTeam==='team1'}
+            roundsWon={state.teams.team1.score}
             roundsNeeded={roundsNeeded}
-            onKeypad={d=>dispatch({type:'KEYPAD_INPUT',team:state.round.activeTeam,digit:d})}
-            onClear={()=>dispatch({type:'CLEAR_INPUT',team:state.round.activeTeam})}
-            onSubmit={()=>dispatch({type:'SUBMIT_ANSWER',team:state.round.activeTeam})}
+            onKeypad={d=>dispatch({type:'KEYPAD_INPUT',team:'team1',digit:d})}
+            onClear={()=>dispatch({type:'CLEAR_INPUT',team:'team1'})}
+            onSubmit={()=>dispatch({type:'SUBMIT_ANSWER',team:'team1'})}
+            correctAnswer={state.round.question?.answer}
           />
         </div>
 
-        {/* Waiting Team Section (Smaller, Dimmed) */}
-        <div style={{flex:0.8,minHeight:0,opacity:0.6}}>
+        {/* Divider */}
+        <div style={{width:'2px',background:'rgba(255,255,255,0.08)',borderRadius:1,flexShrink:0,alignSelf:'stretch'}}/>
+
+        {/* Team 2 (Red) */}
+        <div style={{flex:1,minHeight:0,opacity:state.round.activeTeam==='team2'?1:0.55,transition:'opacity 0.4s'}}>
           <TeamSide
-            teamId={state.round.activeTeam==='team1' ? 'team2' : 'team1'}
-            teamName={state.round.activeTeam==='team1' ? t2.name : t1.name}
-            color={state.round.activeTeam==='team1' ? t2.color : t1.color}
-            teamState={state.round.activeTeam==='team1' ? state.teams.team2 : state.teams.team1}
+            teamId='team2' teamName={t2.name}
+            color={t2.color}
+            teamState={state.teams.team2}
             question={state.round.question}
             timeLeft={state.round.timeLeft} totalTime={state.settings.timePerQuestion}
-            isActive={false}
-            roundsWon={state.round.activeTeam==='team1' ? state.teams.team2.score : state.teams.team1.score}
+            isActive={state.round.activeTeam==='team2'}
+            roundsWon={state.teams.team2.score}
             roundsNeeded={roundsNeeded}
-            onKeypad={()=>{}}
-            onClear={()=>{}}
-            onSubmit={()=>{}}
+            onKeypad={d=>dispatch({type:'KEYPAD_INPUT',team:'team2',digit:d})}
+            onClear={()=>dispatch({type:'CLEAR_INPUT',team:'team2'})}
+            onSubmit={()=>dispatch({type:'SUBMIT_ANSWER',team:'team2'})}
+            correctAnswer={state.round.question?.answer}
           />
         </div>
       </div>
