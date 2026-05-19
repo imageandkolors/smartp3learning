@@ -9,6 +9,7 @@ export const DEFAULT_SETTINGS = {
   classLevel: 'P3' as const,
   team1Name: 'Blue Team',
   team2Name: 'Red Team',
+  questionsPerRound: 5,
 };
 
 const makeTeam = () => ({
@@ -48,6 +49,29 @@ export function tugReducer(state: GameState, action: GameAction): GameState {
 
     case 'UPDATE_SETTINGS':
       return { ...state, settings: { ...state.settings, ...action.settings } };
+
+    case 'START_SUBJECT_SELECT':
+      return { ...state, phase: 'subject-select' };
+
+    case 'RESET_TO_SETTINGS':
+      return { ...state, phase: 'settings' };
+
+    case 'START_GAME_WITH_SUBJECT': {
+      const { subject, pool } = action;
+      return {
+        ...makeInitialState(),
+        settings: { ...state.settings, subject },
+        phase: 'countdown',
+        countdownValue: 3,
+        questionPool: pool,
+        round: {
+          round: 1, ropePosition: 0, questionIndex: 0,
+          question: pool[0] || null,
+          timeLeft: state.settings.timePerQuestion,
+          activeTeam: 'team1', turnCount: 0,
+        },
+      };
+    }
 
     case 'START_GAME': {
       const pool = action.pool;

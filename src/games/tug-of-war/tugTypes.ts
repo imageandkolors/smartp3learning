@@ -1,7 +1,7 @@
 // ─── tugTypes.ts ──────────────────────────────────────────────────────────────
 
 export type TeamId = 'team1' | 'team2';
-export type GamePhase = 'settings' | 'countdown' | 'playing' | 'round-result' | 'match-over';
+export type GamePhase = 'settings' | 'subject-select' | 'countdown' | 'playing' | 'round-result' | 'match-over';
 export type ClassLevel = 'P1' | 'P2' | 'P3' | 'P4' | 'P5' | 'P6';
 
 export interface TugQuestion {
@@ -67,6 +67,9 @@ export interface GameState {
 
 export type GameAction =
   | { type: 'START_GAME'; pool: TugQuestion[] }
+  | { type: 'START_SUBJECT_SELECT' }
+  | { type: 'START_GAME_WITH_SUBJECT'; subject: string; pool: TugQuestion[] }
+  | { type: 'RESET_TO_SETTINGS' }
   | { type: 'COUNTDOWN_TICK' }
   | { type: 'KEYPAD_INPUT'; team: TeamId; digit: string }
   | { type: 'CLEAR_INPUT'; team: TeamId }

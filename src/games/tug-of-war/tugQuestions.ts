@@ -344,8 +344,11 @@ export const ALL_TUG_QUESTIONS: Record<string, TugQuestion[]> = {
   P1, P2, P3, P4, P5, P6,
 };
 
-export function getQuestionsForLevel(level: string): TugQuestion[] {
-  return ALL_TUG_QUESTIONS[level] || P3;
+export function getQuestionsForLevel(level: string, subject?: string): TugQuestion[] {
+  const questions = ALL_TUG_QUESTIONS[level] || P3;
+  if (!subject || subject === 'All') return questions;
+  // Filter by subject (case-insensitive)
+  return questions.filter(q => q.subject.toLowerCase() === subject.toLowerCase());
 }
 
 export function shuffleQuestions(arr: TugQuestion[]): TugQuestion[] {
