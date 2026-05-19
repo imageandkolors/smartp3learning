@@ -170,53 +170,66 @@ export function TugOfWarGame({ onGameComplete, onExit }: Props) {
       display:'flex', flexDirection:'column',
       fontFamily:"'Nunito',sans-serif",
     }}>
-      {/* Top bar */}
+      {/* REDESIGNED: Premium Header with Game Info */}
       <div style={{
         display:'flex', alignItems:'center', justifyContent:'space-between',
-        padding:'clamp(5px,1.2vh,10px) clamp(8px,2vw,14px)', flexShrink:0,
-        background:'rgba(0,0,0,0.35)', borderBottom:'1px solid rgba(255,255,255,0.07)',
+        padding:'clamp(8px,1.5vh,14px) clamp(12px,2.5vw,20px)', flexShrink:0,
+        background:'linear-gradient(180deg,rgba(13,27,75,0.8),rgba(0,0,0,0.4))',
+        borderBottom:'2px solid rgba(79,195,247,0.2)',
+        backdropFilter:'blur(12px)',
         zIndex:5,
       }}>
-        <button onClick={handleExit} style={{
-          background:'rgba(255,255,255,0.1)', border:'1px solid rgba(255,255,255,0.2)',
-          borderRadius:10, padding:'clamp(4px,1vh,7px) clamp(10px,2vw,14px)',
-          color:'rgba(255,255,255,0.75)', fontFamily:"'Nunito',sans-serif",
-          fontWeight:800, fontSize:'clamp(0.72rem,1.6vw,0.88rem)', cursor:'pointer',
-        }}>‹ Exit</button>
+        <motion.button onClick={handleExit} whileHover={{scale:1.05}} whileTap={{scale:0.95}} style={{
+          background:'linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0.05))',
+          border:'1.5px solid rgba(255,255,255,0.15)',
+          borderRadius:12, padding:'clamp(6px,1.2vh,10px) clamp(12px,2.5vw,16px)',
+          color:'rgba(255,255,255,0.85)', fontFamily:"'Baloo 2',sans-serif",
+          fontWeight:800, fontSize:'clamp(0.8rem,1.8vw,0.95rem)', cursor:'pointer',
+          backdropFilter:'blur(8px)',
+        }}>‹ Exit</motion.button>
 
-        <div style={{display:'flex',alignItems:'center',gap:'clamp(8px,2vw,16px)'}}>
-          <span style={{fontFamily:"'Baloo 2',sans-serif",fontWeight:900,
-            fontSize:'clamp(0.75rem,2vw,0.95rem)',color:'#4FC3F7'}}>
-            🔵 {state.teams.team1.score}
-          </span>
-          <div style={{
-            background:'rgba(255,255,255,0.1)', border:'1px solid rgba(255,255,255,0.2)',
-            borderRadius:12, padding:'clamp(4px,0.8vh,6px) clamp(12px,2.5vw,18px)',
-            fontFamily:"'Baloo 2',sans-serif", fontWeight:900,
-            fontSize:'clamp(0.72rem,1.8vw,0.9rem)', color:'white',
-          }}>
-            Round {state.round.round}/{state.settings.totalRounds}
-            &nbsp;·&nbsp;{state.settings.classLevel}
+        <div style={{display:'flex',alignItems:'center',gap:'clamp(10px,3vw,20px)',flex:1,justifyContent:'center'}}>
+          <div style={{textAlign:'center'}}>
+            <div style={{fontFamily:"'Baloo 2',sans-serif",fontWeight:900,fontSize:'clamp(0.9rem,2.2vw,1.2rem)',color:'#4FC3F7',lineHeight:1}}>
+              🔵 {t1.name}
+            </div>
+            <div style={{fontFamily:"'Baloo 2',sans-serif",fontWeight:900,fontSize:'clamp(1.2rem,3vw,1.6rem)',color:'#4FC3F7',textShadow:'0 0 10px #4FC3F755'}}>
+              {state.teams.team1.score}
+            </div>
           </div>
-          <span style={{fontFamily:"'Baloo 2',sans-serif",fontWeight:900,
-            fontSize:'clamp(0.75rem,2vw,0.95rem)',color:'#EF9A9A'}}>
-            {state.teams.team2.score} 🔴
-          </span>
+          <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
+            <div style={{fontFamily:"'Baloo 2',sans-serif",fontWeight:900,fontSize:'clamp(0.75rem,1.8vw,0.95rem)',color:'rgba(255,255,255,0.4)',textTransform:'uppercase',letterSpacing:'0.05em'}}>
+              Round {state.round.round}/{state.settings.totalRounds}
+            </div>
+            <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:700,fontSize:'clamp(0.68rem,1.5vw,0.82rem)',color:'rgba(255,255,255,0.3)'}}>
+              {state.settings.classLevel}
+            </div>
+          </div>
+          <div style={{textAlign:'center'}}>
+            <div style={{fontFamily:"'Baloo 2',sans-serif",fontWeight:900,fontSize:'clamp(0.9rem,2.2vw,1.2rem)',color:'#EF9A9A',lineHeight:1}}>
+              🔴 {t2.name}
+            </div>
+            <div style={{fontFamily:"'Baloo 2',sans-serif",fontWeight:900,fontSize:'clamp(1.2rem,3vw,1.6rem)',color:'#EF9A9A',textShadow:'0 0 10px #EF9A9A55'}}>
+              {state.teams.team2.score}
+            </div>
+          </div>
         </div>
 
-        <button onClick={toggleFullscreen} style={{
-          background:'rgba(255,255,255,0.1)', border:'1px solid rgba(255,255,255,0.2)',
-          borderRadius:10, padding:'clamp(4px,1vh,7px) clamp(10px,2vw,14px)',
-          color:'rgba(255,255,255,0.75)', fontSize:'clamp(0.85rem,2vw,1.1rem)',
-          cursor:'pointer', lineHeight:1,
-        }}>⛶</button>
+        <motion.button onClick={toggleFullscreen} whileHover={{scale:1.05}} whileTap={{scale:0.95}} style={{
+          background:'linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0.05))',
+          border:'1.5px solid rgba(255,255,255,0.15)',
+          borderRadius:12, padding:'clamp(6px,1.2vh,10px) clamp(12px,2.5vw,16px)',
+          color:'rgba(255,255,255,0.85)', fontSize:'clamp(0.95rem,2.2vw,1.2rem)',
+          cursor:'pointer', backdropFilter:'blur(8px)',
+        }}>⛶</motion.button>
       </div>
 
-      {/* Rope zone */}
+      {/* REDESIGNED: Prominent Rope Visualization Zone */}
       <div style={{
-        padding:'clamp(4px,1vh,8px) clamp(8px,2vw,16px)',
+        padding:'clamp(12px,2.5vh,20px) clamp(12px,2.5vw,20px)',
         flexShrink:0, zIndex:2,
-        borderBottom:'1px solid rgba(255,255,255,0.05)',
+        background:'linear-gradient(180deg,rgba(0,0,0,0.2),rgba(0,0,0,0.05))',
+        borderBottom:'1px solid rgba(255,255,255,0.06)',
       }}>
         <TugRope
           ropePosition={state.round.ropePosition}
@@ -230,52 +243,66 @@ export function TugOfWarGame({ onGameComplete, onExit }: Props) {
         />
       </div>
 
-      {/* Active team indicator */}
+      {/* REDESIGNED: Active Team Indicator - Centered, Prominent */}
       <motion.div key={state.round.activeTeam}
-        initial={{opacity:0}} animate={{opacity:1}}
+        initial={{opacity:0,y:5}} animate={{opacity:1,y:0}}
         style={{
-          textAlign:'center', padding:'clamp(2px,0.6vh,5px) 0', flexShrink:0,
+          textAlign:'center', padding:'clamp(6px,1.2vh,10px) 0', flexShrink:0,
           fontFamily:"'Baloo 2',sans-serif", fontWeight:900,
-          fontSize:'clamp(0.65rem,1.6vw,0.82rem)',
+          fontSize:'clamp(0.75rem,1.8vw,0.95rem)',
           color: state.round.activeTeam==='team1' ? '#4FC3F7' : '#EF9A9A',
+          textTransform:'uppercase',
+          letterSpacing:'0.08em',
+          borderTop:'1px solid rgba(255,255,255,0.04)',
         }}>
-        {state.round.activeTeam==='team1' ? `🔵 ${t1.name}'s turn` : `🔴 ${t2.name}'s turn`}
+        {state.round.activeTeam==='team1' ? `🔵 ${t1.name}'s Turn to Answer` : `🔴 ${t2.name}'s Turn to Answer`}
         {state.teams[state.round.activeTeam].streak>=3 && (
-          <span style={{marginLeft:8,color:'#FFD700'}}>
-            🔥 {state.teams[state.round.activeTeam].streak} streak!
-          </span>
+          <div style={{marginTop:2,color:'#FFD700',fontSize:'0.85em'}}>
+            🔥 {state.teams[state.round.activeTeam].streak} Correct Streak!
+          </div>
         )}
       </motion.div>
 
-      {/* Two team sides */}
+      {/* REDESIGNED: Vertical Stacked Layout - Active Team on Top, Inactive Below */}
       <div style={{
-        flex:1, display:'flex', gap:'clamp(5px,1.5vw,10px)',
-        padding:'clamp(4px,1vh,8px) clamp(6px,1.5vw,10px) clamp(6px,1.5vh,12px)',
+        flex:1, display:'flex', flexDirection:'column', gap:'clamp(10px,2vh,16px)',
+        padding:'clamp(10px,2vh,16px) clamp(10px,2vw,16px)',
         overflow:'hidden', minHeight:0,
       }}>
-        <TeamSide
-          teamId="team1" teamName={t1.name} color={t1.color}
-          teamState={state.teams.team1}
-          question={state.round.question}
-          timeLeft={state.round.timeLeft} totalTime={state.settings.timePerQuestion}
-          isActive={state.round.activeTeam==='team1'}
-          roundsWon={state.teams.team1.score} roundsNeeded={roundsNeeded}
-          onKeypad={d=>dispatch({type:'KEYPAD_INPUT',team:'team1',digit:d})}
-          onClear={()=>dispatch({type:'CLEAR_INPUT',team:'team1'})}
-          onSubmit={()=>dispatch({type:'SUBMIT_ANSWER',team:'team1'})}
-        />
-        <div style={{width:2,background:'rgba(255,255,255,0.06)',borderRadius:2,flexShrink:0,alignSelf:'stretch'}}/>
-        <TeamSide
-          teamId="team2" teamName={t2.name} color={t2.color}
-          teamState={state.teams.team2}
-          question={state.round.question}
-          timeLeft={state.round.timeLeft} totalTime={state.settings.timePerQuestion}
-          isActive={state.round.activeTeam==='team2'}
-          roundsWon={state.teams.team2.score} roundsNeeded={roundsNeeded}
-          onKeypad={d=>dispatch({type:'KEYPAD_INPUT',team:'team2',digit:d})}
-          onClear={()=>dispatch({type:'CLEAR_INPUT',team:'team2'})}
-          onSubmit={()=>dispatch({type:'SUBMIT_ANSWER',team:'team2'})}
-        />
+        {/* Active Team Section (Larger, More Prominent) */}
+        <div style={{flex:1.2,minHeight:0}}>
+          <TeamSide
+            teamId={state.round.activeTeam} teamName={state.round.activeTeam==='team1' ? t1.name : t2.name} 
+            color={state.round.activeTeam==='team1' ? t1.color : t2.color}
+            teamState={state.round.activeTeam==='team1' ? state.teams.team1 : state.teams.team2}
+            question={state.round.question}
+            timeLeft={state.round.timeLeft} totalTime={state.settings.timePerQuestion}
+            isActive={true}
+            roundsWon={state.round.activeTeam==='team1' ? state.teams.team1.score : state.teams.team2.score} 
+            roundsNeeded={roundsNeeded}
+            onKeypad={d=>dispatch({type:'KEYPAD_INPUT',team:state.round.activeTeam,digit:d})}
+            onClear={()=>dispatch({type:'CLEAR_INPUT',team:state.round.activeTeam})}
+            onSubmit={()=>dispatch({type:'SUBMIT_ANSWER',team:state.round.activeTeam})}
+          />
+        </div>
+
+        {/* Waiting Team Section (Smaller, Dimmed) */}
+        <div style={{flex:0.8,minHeight:0,opacity:0.6}}>
+          <TeamSide
+            teamId={state.round.activeTeam==='team1' ? 'team2' : 'team1'}
+            teamName={state.round.activeTeam==='team1' ? t2.name : t1.name}
+            color={state.round.activeTeam==='team1' ? t2.color : t1.color}
+            teamState={state.round.activeTeam==='team1' ? state.teams.team2 : state.teams.team1}
+            question={state.round.question}
+            timeLeft={state.round.timeLeft} totalTime={state.settings.timePerQuestion}
+            isActive={false}
+            roundsWon={state.round.activeTeam==='team1' ? state.teams.team2.score : state.teams.team1.score}
+            roundsNeeded={roundsNeeded}
+            onKeypad={()=>{}}
+            onClear={()=>{}}
+            onSubmit={()=>{}}
+          />
+        </div>
       </div>
 
       {/* Global toast */}

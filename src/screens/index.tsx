@@ -80,11 +80,16 @@ export function DesktopTopbar(){
 
 /* ─── DESKTOP SIDEBAR ─────────────────────────────── */
 export function DesktopSidebar(){
-  const{screen,setScreen,sidebarCollapsed}=useAppStore();const{play}=useSFX();
+  const{screen,setScreen,sidebarCollapsed,toggleSidebar}=useAppStore();const{play}=useSFX();
   const items=[{id:'home',icon:'🏠',lbl:'Home'},{id:'subjects',icon:'📚',lbl:'Subjects'},{id:'k-pick',icon:'⚡',lbl:'Kahoot'},{id:'games',icon:'🎮',lbl:'Games',badge:'NEW'},{id:'awards',icon:'🏆',lbl:'Awards'}];
   return(<motion.aside className="sidebar" animate={{width:sidebarCollapsed?64:256}} transition={{type:'spring',stiffness:300,damping:30}}>
+    <div className="sb-header" style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px clamp(8px,2vw,14px)',borderBottom:'1px solid rgba(255,255,255,0.06)',flexShrink:0}}>
+      {!sidebarCollapsed&&<span style={{fontFamily:"'Baloo 2',sans-serif",fontWeight:900,fontSize:'0.9rem',color:'var(--text)'}}>Menu</span>}
+      <motion.button onClick={()=>{toggleSidebar();play('click');}} whileHover={{scale:1.1}} whileTap={{scale:0.95}} style={{marginLeft:'auto',background:'rgba(0,0,0,0.1)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:8,padding:'6px 8px',color:'var(--text)',fontSize:'1.1rem',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}>
+        {sidebarCollapsed?'→':'←'}
+      </motion.button>
+    </div>
     <div className="sb-nav">
-      <div className="sb-section-label">Menu</div>
       {items.map(i=>(<button key={i.id} className={`sb-item${screen===i.id?' active':''}`} onClick={()=>{setScreen(i.id as any);play('nav');}}>
         <div className="sb-icon">{i.icon}</div><span className="sb-label">{i.lbl}</span>{i.badge&&<span className="sb-badge">{i.badge}</span>}
       </button>))}
