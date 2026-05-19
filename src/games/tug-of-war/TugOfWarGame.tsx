@@ -270,11 +270,12 @@ export function TugOfWarGame({ onGameComplete, onExit }: Props) {
         )}
       </motion.div>
 
-      {/* REDESIGNED: Side-by-Side Layout - Both Teams Visible Simultaneously */}
+      {/* REDESIGNED: Side-by-Side Layout - Both Teams Visible Simultaneously (Responsive) */}
       <div style={{
         flex:1, display:'flex', gap:'clamp(8px,1.5vw,16px)',
         padding:'clamp(10px,2vh,16px) clamp(10px,2vw,16px)',
         overflow:'hidden', minHeight:0,
+        flexDirection: window.innerWidth < 900 ? 'column' : 'row',
       }}>
         {/* Team 1 (Blue) */}
         <div style={{flex:1,minHeight:0,opacity:state.round.activeTeam==='team1'?1:0.55,transition:'opacity 0.4s'}}>
@@ -295,7 +296,11 @@ export function TugOfWarGame({ onGameComplete, onExit }: Props) {
         </div>
 
         {/* Divider */}
-        <div style={{width:'2px',background:'rgba(255,255,255,0.08)',borderRadius:1,flexShrink:0,alignSelf:'stretch'}}/>
+        <div style={{
+          width: window.innerWidth < 900 ? '100%' : '2px',
+          height: window.innerWidth < 900 ? '2px' : 'auto',
+          background:'rgba(255,255,255,0.08)',borderRadius:1,flexShrink:0,alignSelf:window.innerWidth < 900 ? 'stretch' : 'stretch'
+        }}/>
 
         {/* Team 2 (Red) */}
         <div style={{flex:1,minHeight:0,opacity:state.round.activeTeam==='team2'?1:0.55,transition:'opacity 0.4s'}}>

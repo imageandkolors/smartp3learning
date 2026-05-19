@@ -84,17 +84,25 @@ export function TeamSide({
   const pct = (timeLeft / totalTime) * 100;
   const timerCol = pct > 50 ? '#00c97a' : pct > 25 ? '#F5A623' : '#e74c3c';
   const urgent = pct <= 30;
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 900);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div style={{
-      flex:1, display:'flex', flexDirection:'column', gap:'clamp(5px,1.2vh,10px)',
-      padding:'clamp(6px,1.5vw,12px)',
+      flex:1, display:'flex', flexDirection:'column', gap:'clamp(5px,1.2vh,8px)',
+      padding:'clamp(8px,1.5vw,12px)',
       background: isActive ? `${color}18` : 'rgba(255,255,255,0.03)',
       borderRadius:18,
       border:`2px solid ${isActive ? color+'66' : 'rgba(255,255,255,0.07)'}`,
       transition:'all 0.3s',
       position:'relative', overflow:'hidden',
       minWidth:0,
+      maxWidth:isMobile ? '100%' : 'none',
     }}>
       {/* Active pulse bg */}
       {isActive && (
@@ -197,12 +205,12 @@ export function TeamSide({
 
       {/* Number pad */}
       <div style={{
-        display:'grid', gridTemplateRows:'repeat(4,1fr)', gap:'clamp(4px,1vw,7px)',
+        display:'grid', gridTemplateRows:'repeat(4,1fr)', gap:'clamp(3px,0.8vw,6px)',
         flex:1, zIndex:1, opacity: isActive ? 1 : 0.25, minHeight:0,
       }}>
         {ROWS.map((row,ri)=>(
           <div key={ri} style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',
-            gap:'clamp(4px,1vw,7px)'}}>
+            gap:'clamp(3px,0.8vw,6px)'}}>
             {row.map(key=>{
               const isSubmit = key==='✓';
               const isClear  = key==='CLR';
@@ -217,10 +225,10 @@ export function TeamSide({
                     else onKeypad(key);
                   }}
                   style={{
-                    borderRadius:'clamp(8px,1.5vw,14px)', cursor:isActive?'pointer':'default',
+                    borderRadius:'clamp(6px,1.2vw,12px)', cursor:isActive?'pointer':'default',
                     border:'none', color:'white',
                     fontFamily:"'Baloo 2',sans-serif", fontWeight:900,
-                    fontSize:'clamp(0.85rem,2.2vw,1.3rem)',
+                    fontSize:'clamp(0.75rem,1.8vw,1.1rem)',
                     background: isSubmit
                       ? `linear-gradient(135deg,${color},${color}bb)`
                       : isClear
@@ -228,7 +236,7 @@ export function TeamSide({
                       : 'rgba(255,255,255,0.09)',
                     boxShadow: isSubmit && isActive ? `0 3px 12px ${color}55` : 'none',
                     display:'flex', alignItems:'center', justifyContent:'center',
-                    minHeight:'clamp(34px,6vw,52px)',
+                    minHeight:'clamp(32px,5vw,48px)',
                     transition:'background 0.15s',
                   }}>
                   {key}
