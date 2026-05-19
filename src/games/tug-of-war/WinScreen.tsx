@@ -86,9 +86,10 @@ interface MatchProps {
   winner: TeamId; winnerName: string; winnerColor: string;
   t1Score: number; t2Score: number; t1Name: string; t2Name: string;
   onPlayAgain: () => void; onExit: () => void;
+  onViewLeaderboard?: () => void;
 }
 
-export function MatchOverOverlay({winner,winnerName,winnerColor,t1Score,t2Score,t1Name,t2Name,onPlayAgain,onExit}:MatchProps) {
+export function MatchOverOverlay({winner,winnerName,winnerColor,t1Score,t2Score,t1Name,t2Name,onPlayAgain,onExit,onViewLeaderboard}:MatchProps) {
   return (
     <motion.div initial={{opacity:0}} animate={{opacity:1}}
       style={{position:'absolute',inset:0,zIndex:50,
@@ -120,34 +121,46 @@ export function MatchOverOverlay({winner,winnerName,winnerColor,t1Score,t2Score,
           fontWeight:800,fontSize:'clamp(0.9rem,2vw,1rem)',marginBottom:20}}>
           wins the match! 🎉
         </div>
-        {/* Score */}
+        {/* Score Card */}
         <div style={{background:'rgba(255,255,255,0.07)',borderRadius:16,
-          padding:'12px 20px',marginBottom:24,
+          padding:'16px 20px',marginBottom:24,
           display:'flex',justifyContent:'center',gap:20,fontFamily:"'Baloo 2',sans-serif"}}>
           <div style={{textAlign:'center'}}>
-            <div style={{fontSize:'clamp(1.4rem,4vw,1.9rem)',fontWeight:900,color:'#4FC3F7'}}>{t1Score}</div>
-            <div style={{fontSize:'0.68rem',color:'rgba(255,255,255,0.45)',fontWeight:700}}>{t1Name}</div>
+            <div style={{fontSize:'clamp(1.6rem,4vw,2rem)',fontWeight:900,color:'#4FC3F7'}}>{t1Score}</div>
+            <div style={{fontSize:'0.7rem',color:'rgba(255,255,255,0.45)',fontWeight:700,marginTop:4}}>{t1Name}</div>
+            <div style={{fontSize:'0.65rem',color:'rgba(79,195,247,0.6)',fontWeight:600,marginTop:6}}>Rounds Won</div>
           </div>
-          <div style={{fontSize:'1.3rem',alignSelf:'center',color:'rgba(255,255,255,0.25)'}}>:</div>
+          <div style={{fontSize:'1.3rem',alignSelf:'center',color:'rgba(255,255,255,0.25)'}}>vs</div>
           <div style={{textAlign:'center'}}>
-            <div style={{fontSize:'clamp(1.4rem,4vw,1.9rem)',fontWeight:900,color:'#EF9A9A'}}>{t2Score}</div>
-            <div style={{fontSize:'0.68rem',color:'rgba(255,255,255,0.45)',fontWeight:700}}>{t2Name}</div>
+            <div style={{fontSize:'clamp(1.6rem,4vw,2rem)',fontWeight:900,color:'#EF9A9A'}}>{t2Score}</div>
+            <div style={{fontSize:'0.7rem',color:'rgba(255,255,255,0.45)',fontWeight:700,marginTop:4}}>{t2Name}</div>
+            <div style={{fontSize:'0.65rem',color:'rgba(239,154,154,0.6)',fontWeight:600,marginTop:6}}>Rounds Won</div>
           </div>
         </div>
         <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap' as const}}>
           <motion.button onClick={onPlayAgain} whileHover={{scale:1.05}} whileTap={{scale:0.95}}
             style={{background:'linear-gradient(135deg,#008751,#005c38)',border:'none',
-              borderRadius:16,padding:'12px clamp(20px,4vw,28px)',color:'white',
+              borderRadius:16,padding:'12px clamp(16px,3vw,24px)',color:'white',
               fontFamily:"'Baloo 2',sans-serif",fontWeight:900,
-              fontSize:'clamp(0.85rem,2vw,1rem)',cursor:'pointer',
-              boxShadow:'0 4px 20px rgba(0,135,81,0.45)'}}>
+              fontSize:'clamp(0.8rem,1.8vw,0.95rem)',cursor:'pointer',
+              boxShadow:'0 4px 20px rgba(0,135,81,0.45)',flex:'1 1 auto',minWidth:'100px'}}>
             🔄 Play Again
           </motion.button>
+          {onViewLeaderboard && (
+            <motion.button onClick={onViewLeaderboard} whileHover={{scale:1.05}} whileTap={{scale:0.95}}
+              style={{background:'linear-gradient(135deg,#F5A623,#e67e22)',border:'none',
+                borderRadius:16,padding:'12px clamp(16px,3vw,24px)',color:'white',
+                fontFamily:"'Baloo 2',sans-serif",fontWeight:900,
+                fontSize:'clamp(0.8rem,1.8vw,0.95rem)',cursor:'pointer',
+                boxShadow:'0 4px 20px rgba(245,166,35,0.35)',flex:'1 1 auto',minWidth:'100px'}}>
+              🏆 Leaderboard
+            </motion.button>
+          )}
           <motion.button onClick={onExit} whileHover={{scale:1.05}} whileTap={{scale:0.95}}
             style={{background:'rgba(255,255,255,0.1)',border:'2px solid rgba(255,255,255,0.2)',
-              borderRadius:16,padding:'12px clamp(20px,4vw,28px)',color:'white',
+              borderRadius:16,padding:'12px clamp(16px,3vw,24px)',color:'white',
               fontFamily:"'Baloo 2',sans-serif",fontWeight:900,
-              fontSize:'clamp(0.85rem,2vw,1rem)',cursor:'pointer'}}>
+              fontSize:'clamp(0.8rem,1.8vw,0.95rem)',cursor:'pointer',flex:'1 1 auto',minWidth:'100px'}}>
             🏠 Exit
           </motion.button>
         </div>

@@ -147,21 +147,43 @@ export function SettingsPanel({ settings, onUpdate, onStart, onExit }: Props) {
             </div>
           </div>
           <div style={card}>
-            <div style={label}>🏆 Rounds</div>
-            <div style={{display:'flex',gap:6}}>
-              {[3,5].map(r=>(
+            <div style={label}>🏆 Total Rounds</div>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:6}}>
+              {[3,5,7].map(r=>(
                 <motion.button key={r} whileTap={{scale:0.95}}
                   onClick={()=>onUpdate({totalRounds:r})}
                   style={{
-                    flex:1,padding:'9px 4px',borderRadius:10,cursor:'pointer',
+                    padding:'9px 4px',borderRadius:10,cursor:'pointer',
                     background: settings.totalRounds===r ? '#008751' : 'rgba(255,255,255,0.07)',
                     border: settings.totalRounds===r ? '2px solid #00c97a' : '2px solid rgba(255,255,255,0.12)',
-                    color:'white',fontFamily:"'Baloo 2',sans-serif",fontWeight:900,fontSize:'0.9rem',
+                    color:'white',fontFamily:"'Baloo 2',sans-serif",fontWeight:900,fontSize:'0.85rem',
                   }}>
-                  Best of {r}
+                  {r} Rounds
                 </motion.button>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* Questions Per Round */}
+        <div style={card}>
+          <div style={label}>📋 Questions per Round</div>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:6}}>
+            {[3,4,5,6].map(q=>(
+              <motion.button key={q} whileTap={{scale:0.95}}
+                onClick={()=>onUpdate({questionsPerRound:q})}
+                style={{
+                  padding:'8px 4px',borderRadius:10,cursor:'pointer',
+                  background: settings.questionsPerRound===q ? '#4FC3F7' : 'rgba(255,255,255,0.07)',
+                  border: settings.questionsPerRound===q ? '2px solid #4FC3F7' : '2px solid rgba(255,255,255,0.12)',
+                  color:'white',fontFamily:"'Baloo 2',sans-serif",fontWeight:900,fontSize:'0.85rem',
+                }}>
+                {q}Qs
+              </motion.button>
+            ))}
+          </div>
+          <div style={{fontSize:'0.68rem',color:'rgba(255,255,255,0.4)',marginTop:8,textAlign:'center'}}>
+            Questions per round (teams alternate)
           </div>
         </div>
 

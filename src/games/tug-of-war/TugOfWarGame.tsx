@@ -5,9 +5,11 @@ import { tugReducer, makeInitialState } from './tugReducer';
 import { TEAM_CONFIGS, shuffle } from './tugUtils';
 import { getQuestionsForLevel } from './tugQuestions';
 import { SettingsPanel } from './SettingsPanel';
+import { SubjectSelector } from './SubjectSelector';
 import { TugRope } from './TugRope';
 import { TeamSide } from './TeamSide';
 import { RoundResultOverlay, MatchOverOverlay, Toast } from './WinScreen';
+import { GameLeaderboard } from './GameLeaderboard';
 import { useSFX } from '../../hooks/useSFX';
 import type { TeamId } from './tugTypes';
 
@@ -18,6 +20,7 @@ interface Props {
 
 export function TugOfWarGame({ onGameComplete, onExit }: Props) {
   const [state, dispatch] = useReducer(tugReducer, makeInitialState());
+  const [showLeaderboard, setShowLeaderboard] = React.useState(false);
   const timerRef    = useRef<ReturnType<typeof setInterval>|null>(null);
   const countRef    = useRef<ReturnType<typeof setInterval>|null>(null);
   const toastTimer  = useRef<ReturnType<typeof setTimeout>|null>(null);
@@ -126,10 +129,25 @@ export function TugOfWarGame({ onGameComplete, onExit }: Props) {
           settings={state.settings}
           onUpdate={s => dispatch({ type:'UPDATE_SETTINGS', settings:s })}
           onStart={() => {
-            const pool = shuffle(getQuestionsForLevel(state.settings.classLevel));
-            dispatch({ type:'START_GAME', pool });
+            dispatch({ type:'START_SUBJECT_SELECT' });
           }}
           onExit={handleExit}
+        />
+      </div>
+    );
+  }
+
+  // ── Subject Selection screen ───────────────────────────────────────────────
+  if (state.phase === 'subject-select') {
+    return (
+      <div style={{position:'absolute',inset:0,overflow:'hidden'}}>
+        <SubjectSelector
+          selectedSubject={state.settings.subject}
+          onSelect={(subject) => {
+            const pool = shuffle(getQuestionsForLevel(state.settings.classLevel, subject));
+            dispatch({ type:'START_GAME_WITH_SUBJECT', subject, pool });
+          }}
+          onBack={() => dispatch({ type:'RESET_TO_SETTINGS' })}
         />
       </div>
     );
@@ -345,7 +363,7 @@ export function TugOfWarGame({ onGameComplete, onExit }: Props) {
 
       {/* Match over */}
       <AnimatePresence>
-        {state.phase==='match-over' && state.winner && (
+        {state.phase==='match-over' && state.winner && !showLeaderboard && (
           <MatchOverOverlay
             winner={state.winner}
             winnerName={state.winner==='team1' ? t1.name : t2.name}
@@ -353,10 +371,42 @@ export function TugOfWarGame({ onGameComplete, onExit }: Props) {
             t1Score={state.teams.team1.score} t2Score={state.teams.team2.score}
             t1Name={t1.name} t2Name={t2.name}
             onPlayAgain={()=>{
-              const pool = shuffle(getQuestionsForLevel(state.settings.classLevel));
+              setShowLeaderboard(false);
+              const pool = shuffle(getQuestionsForLevel(state.settings.classLevel, state.settings.subject));
               dispatch({type:'START_GAME',pool});
             }}
-            onExit={handleExit}
+            onExit={()=>{
+              setShowLeaderboard(false);
+              handleExit();
+            }}
+            onViewLeaderboard={()=>setShowLeaderboard(true)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Leaderboard */}
+      <AnimatePresence>
+        {state.phase==='match-over' && state.winner && showLeaderboard && (
+          <GameLeaderboard
+            entries={[
+              {
+                rank: state.teams.team1.score > state.teams.team2.score ? 1 : 2,
+                name: t1.name,
+                roundsWon: state.teams.team1.score,
+                totalRounds: state.settings.totalRounds,
+                color: t1.color,
+                isWinner: state.winner === 'team1',
+              },
+              {
+                rank: state.teams.team2.score > state.teams.team1.score ? 1 : 2,
+                name: t2.name,
+                roundsWon: state.teams.team2.score,
+                totalRounds: state.settings.totalRounds,
+                color: t2.color,
+                isWinner: state.winner === 'team2',
+              },
+            ]}
+            onClose={handleExit}
           />
         )}
       </AnimatePresence>
