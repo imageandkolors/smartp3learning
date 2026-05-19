@@ -32,6 +32,7 @@ export default function App() {
     let cls = 'mode-' + viewMode;
     if (sidebarCollapsed) cls += ' sb-collapsed';
     document.body.className = cls;
+    document.documentElement.className = 'mode-' + viewMode;
   }, [viewMode, sidebarCollapsed]);
 
   // Show grade selector on first launch
@@ -50,14 +51,14 @@ export default function App() {
     <>
       <div id="app-root" className="app-shell">
         {!isDesktop && !isFullscreenGame && <StatusBar />}
-        <DesktopTopbar />
-        <DesktopSidebar />
-        <div className="screens-wrap" style={{ position:'relative', flex:1, overflow:'hidden', gridArea: isDesktop ? 'main' : undefined }}>
-          <AnimatePresence mode="wait">
-            <ActiveScreen key={screen} />
-          </AnimatePresence>
-        </div>
-        {!isDesktop && !isFullscreenGame && <BottomNav />}
+      <DesktopTopbar />
+      <DesktopSidebar />
+      <div className="screens-wrap" style={{ position:'relative', flex:1, overflow:'hidden', gridArea: isDesktop ? 'main' : undefined, width:'100%', height:'100%' }}>
+        <AnimatePresence mode="wait">
+          <ActiveScreen key={screen} />
+        </AnimatePresence>
+      </div>
+      {!isDesktop && !isFullscreenGame && <BottomNav />}
       </div>
       <SizeSwitcher />
     </>

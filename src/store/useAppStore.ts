@@ -25,7 +25,7 @@ interface S {
 }
 
 export const useAppStore = create<S>()(persist((set)=>({
-  screen:'splash', viewMode:'mobile', sidebarCollapsed:false,
+  screen:'splash', viewMode:'desktop', sidebarCollapsed:false,
   selectedGrade:null, fontSize:1, soundEnabled:true, colorBlindMode:false,
   totalPoints:0, progress:{}, badges:[], kahootBest:{},
   cbtSubject:null, cbtQuestions:[], cbtIndex:0, cbtAnswers:{}, cbtScore:0,
