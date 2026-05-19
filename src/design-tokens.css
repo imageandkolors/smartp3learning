@@ -1,0 +1,154 @@
+/* ─── Smart Learning Design System v2.0 ─── */
+/* Professional Gamified Colors for Primary 1-6 Students */
+
+:root {
+  /* ─── GRADE-BASED PRIMARY COLORS ─── */
+  /* P1-P2: Bright, Saturated, Playful */
+  --p12-primary: #00D4FF;      /* Vibrant Cyan */
+  --p12-secondary: #FF006E;    /* Hot Pink */
+  --p12-accent: #FFD60A;       /* Sunny Yellow */
+  --p12-bg: #F0F9FF;           /* Light cyan background */
+
+  /* P3-P4: Balanced, Confident */
+  --p34-primary: #0077B6;      /* Ocean Blue */
+  --p34-secondary: #06A77D;    /* Emerald Green */
+  --p34-accent: #FF6B6B;       /* Coral */
+  --p34-bg: #E8F4F8;           /* Light blue background */
+
+  /* P5-P6: Mature, Aspirational */
+  --p56-primary: #7209B7;      /* Deep Purple */
+  --p56-secondary: #3A86FF;    /* Rich Teal */
+  --p56-accent: #FFB703;       /* Gold */
+  --p56-bg: #F3EDFF;           /* Light purple background */
+
+  /* ─── UNIVERSAL NEUTRALS ─── */
+  --bg-light: #F8F9FA;
+  --bg-white: #FFFFFF;
+  --text-dark: #2C3E50;
+  --text-soft: #6B7A8D;
+  --border-subtle: #E4E9EF;
+  --divider: #D9DCE0;
+
+  /* ─── SEMANTIC COLORS ─── */
+  --success: #10B981;
+  --success-light: #D1FAE5;
+  --error: #EF4444;
+  --error-light: #FEE2E2;
+  --warning: #F59E0B;
+  --warning-light: #FEF3C7;
+  --info: #3B82F6;
+  --info-light: #DBEAFE;
+
+  /* ─── SPACING (8px Grid) ─── */
+  --space-xs: 2px;
+  --space-2xs: 4px;
+  --space-sm: 8px;
+  --space-sm-lg: 12px;
+  --space-md: 16px;
+  --space-md-lg: 20px;
+  --space-lg: 24px;
+  --space-lg-xl: 32px;
+  --space-xl: 40px;
+  --space-xxl: 48px;
+
+  /* ─── BORDER RADIUS ─── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* ─── SHADOWS (Anti-flat with depth) ─── */
+  --shadow-micro: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.2);
+
+  /* ─── TYPOGRAPHY ─── */
+  --font-heading: 'Fredoka One', 'Baloo 2', sans-serif;
+  --font-body: 'Fredoka', 'Nunito Plus', 'Nunito', sans-serif;
+  --font-mono: 'Space Mono', 'Courier New', monospace;
+
+  /* Font sizes (fluid, responsive) */
+  --font-h1: clamp(1.8rem, 5vw, 3.5rem);
+  --font-h2: clamp(1.4rem, 4vw, 2.2rem);
+  --font-h3: clamp(1.1rem, 3vw, 1.6rem);
+  --font-h4: clamp(0.95rem, 2.5vw, 1.3rem);
+  --font-base: 1rem;
+  --font-sm: 0.875rem;
+  --font-xs: 0.75rem;
+
+  /* ─── TOUCH TARGETS & SIZES ─── */
+  --touch-min: 44px;   /* P1-2 minimum */
+  --touch-recommended: 48px;
+  --touch-large: 56px;
+
+  /* ─── ANIMATION ─── */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── GRADE THEME VARIANTS ─── */
+:root.grade-p1,
+:root.grade-p2 {
+  --primary: var(--p12-primary);
+  --secondary: var(--p12-secondary);
+  --accent: var(--p12-accent);
+  --bg-page: var(--p12-bg);
+  --gradient-primary: linear-gradient(135deg, var(--p12-primary), #00A8D8);
+  --gradient-secondary: linear-gradient(135deg, var(--p12-secondary), #FF4081);
+  --gradient-accent: linear-gradient(135deg, var(--p12-accent), #FFC107);
+  --gradient-success: linear-gradient(135deg, var(--success), #06A77D);
+}
+
+:root.grade-p3,
+:root.grade-p4 {
+  --primary: var(--p34-primary);
+  --secondary: var(--p34-secondary);
+  --accent: var(--p34-accent);
+  --bg-page: var(--p34-bg);
+  --gradient-primary: linear-gradient(135deg, var(--p34-primary), #1E90FF);
+  --gradient-secondary: linear-gradient(135deg, var(--p34-secondary), #20C997);
+  --gradient-accent: linear-gradient(135deg, var(--p34-accent), #FF8A80);
+  --gradient-success: linear-gradient(135deg, var(--success), #06A77D);
+}
+
+:root.grade-p5,
+:root.grade-p6 {
+  --primary: var(--p56-primary);
+  --secondary: var(--p56-secondary);
+  --accent: var(--p56-accent);
+  --bg-page: var(--p56-bg);
+  --gradient-primary: linear-gradient(135deg, var(--p56-primary), #9D4EDD);
+  --gradient-secondary: linear-gradient(135deg, var(--p56-secondary), #5E60FF);
+  --gradient-accent: linear-gradient(135deg, var(--p56-accent), #FFB703);
+  --gradient-success: linear-gradient(135deg, var(--success), #06A77D);
+}
+
+/* ─── COLOR BLIND MODE ─── */
+:root.colorblind-deuteranopia {
+  --primary: #0173B2;
+  --secondary: #DE8F05;
+  --accent: #CC78BC;
+}
+
+:root.colorblind-protanopia {
+  --primary: #0173B2;
+  --secondary: #DE8F05;
+  --accent: #CC78BC;
+}
+
+:root.colorblind-tritanopia {
+  --primary: #EE7733;
+  --secondary: #0077BB;
+  --accent: #33BBEE;
+}
+
+/* ─── FONT SIZE SCALING ─── */
+:root.scale-1 { font-size: 16px; }
+:root.scale-1-1 { font-size: 17.6px; }
+:root.scale-1-2 { font-size: 19.2px; }
+:root.scale-1-3 { font-size: 20.8px; }
+:root.scale-1-5 { font-size: 24px; }
