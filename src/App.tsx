@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useAppStore } from './store/useAppStore';
+import { GradeSelector } from './components/GradeSelector';
 import {
   StatusBar, BottomNav, DesktopTopbar, DesktopSidebar, SizeSwitcher,
   SplashScreen, HomeScreen, SubjectsScreen, SubjectDetailScreen,
@@ -23,14 +24,24 @@ const SCREEN_MAP: Record<string, React.FC> = {
 };
 
 export default function App() {
-  const { screen, viewMode, sidebarCollapsed } = useAppStore();
+  const { screen, viewMode, sidebarCollapsed, selectedGrade } = useAppStore();
   const isDesktop = viewMode === 'desktop';
+  const showGradeSelector = !selectedGrade;
 
   useEffect(() => {
     let cls = 'mode-' + viewMode;
     if (sidebarCollapsed) cls += ' sb-collapsed';
     document.body.className = cls;
   }, [viewMode, sidebarCollapsed]);
+
+  // Show grade selector on first launch
+  if (showGradeSelector) {
+    return (
+      <div id="app-root" className="app-shell">
+        <GradeSelector />
+      </div>
+    );
+  }
 
   const ActiveScreen = SCREEN_MAP[screen] ?? HomeScreen;
   const isFullscreenGame = screen === 'tug-of-war';
