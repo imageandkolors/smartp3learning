@@ -1,8 +1,49 @@
 // ─── TeamSide.tsx ─────────────────────────────────────────────────────────────
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSFX } from '../../hooks/useSFX';
 import type { TeamId, TeamState, TugQuestion } from './tugTypes';
+
+// Auto-dismissing feedback toast
+function FeedbackToast({ isCorrect, streak }: { isCorrect: boolean | null; streak: number }) {
+  const [show, setShow] = useState(isCorrect !== null);
+  
+  useEffect(() => {
+    if (isCorrect !== null) {
+      setShow(true);
+      const timer = setTimeout(() => setShow(false), 1200);
+      return () => clearTimeout(timer);
+    }
+  }, [isCorrect]);
+  
+  return (
+    <AnimatePresence>
+      {show && isCorrect !== null && (
+        <motion.div
+          initial={{opacity:0,y:-12,scale:0.8}}
+          animate={{opacity:1,y:0,scale:1}}
+          exit={{opacity:0,y:-20,scale:0.8}}
+          transition={{duration:0.3}}
+          style={{
+            position:'absolute', top:'clamp(50px,10vh,70px)',
+            left:'50%', transform:'translateX(-50%)',
+            zIndex:20, pointerEvents:'none',
+            background: isCorrect
+              ? 'linear-gradient(135deg,#008751,#00c97a)'
+              : 'linear-gradient(135deg,#e74c3c,#c0392b)',
+            padding:'7px clamp(12px,2vw,18px)', borderRadius:20,
+            fontFamily:"'Baloo 2',sans-serif", fontWeight:900,
+            fontSize:'clamp(0.7rem,1.6vw,0.9rem)', color:'white',
+            boxShadow:'0 4px 16px rgba(0,0,0,0.4)', whiteSpace:'nowrap' as const,
+          }}>
+          {isCorrect
+            ? streak>=3 ? `🔥 x${streak} STREAK!` : '✅ Correct!'
+            : '❌ Wrong!'}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
 interface Props {
   teamId: TeamId;
@@ -187,33 +228,8 @@ export function TeamSide({
         ))}
       </div>
 
-      {/* Feedback toast */}
-      <AnimatePresence>
-        {teamState.lastAnswerCorrect !== null && (
-          <motion.div
-            key={`${teamState.streak}-${teamState.lastAnswerCorrect}`}
-            initial={{opacity:0,y:-12,scale:0.8}}
-            animate={{opacity:1,y:0,scale:1}}
-            exit={{opacity:0,y:-20,scale:0.8}}
-            transition={{duration:0.3}}
-            style={{
-              position:'absolute', top:'clamp(50px,10vh,70px)',
-              left:'50%', transform:'translateX(-50%)',
-              zIndex:20, pointerEvents:'none',
-              background: teamState.lastAnswerCorrect
-                ? 'linear-gradient(135deg,#008751,#00c97a)'
-                : 'linear-gradient(135deg,#e74c3c,#c0392b)',
-              padding:'7px clamp(12px,2vw,18px)', borderRadius:20,
-              fontFamily:"'Baloo 2',sans-serif", fontWeight:900,
-              fontSize:'clamp(0.7rem,1.6vw,0.9rem)', color:'white',
-              boxShadow:'0 4px 16px rgba(0,0,0,0.4)', whiteSpace:'nowrap' as const,
-            }}>
-            {teamState.lastAnswerCorrect
-              ? teamState.streak>=3 ? `🔥 x${teamState.streak} STREAK!` : '✅ Correct!'
-              : '❌ Wrong!'}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Feedback toast - Shows for 1.2s then auto-hides */}
+      <FeedbackToast isCorrect={teamState.lastAnswerCorrect} streak={teamState.streak}/>
     </div>
   );
 }
