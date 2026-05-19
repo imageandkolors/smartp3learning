@@ -163,9 +163,15 @@ body.sb-collapsed .sb-badge{opacity:0;}
 .scroll-c{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
 .scroll-c::-webkit-scrollbar{display:none;}
 .pad{padding:16px;}
-.app-header{height:var(--header-h);display:flex;align-items:center;padding:0 16px;gap:10px;background:var(--gd);flex-shrink:0;color:white;}
-.hdr-back{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:white;font-size:22px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
-.hdr-title{font-family:'Baloo 2',sans-serif;font-size:1.05rem;font-weight:800;flex:1;text-align:center;}
+/* ─── APP HEADERS ─── */
+.app-header{height:var(--header-h);display:flex;align-items:center;padding:0 16px;gap:10px;background:var(--gd);flex-shrink:0;color:white;box-shadow:var(--shadow);z-index:10;}
+@media(max-width:480px){.app-header{height:52px;padding:0 12px;gap:8px;}}
+/* ─── HEADER BUTTONS ─── */
+.hdr-back{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:white;font-size:22px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;min-height:var(--touch-min);}
+.hdr-back:hover{background:rgba(255,255,255,.25);transform:scale(1.05);}
+.hdr-back:active{transform:scale(0.95);}
+.hdr-title{font-family:'Baloo 2',sans-serif;font-size:1.05rem;font-weight:800;flex:1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+@media(max-width:480px){.hdr-back{width:40px;height:40px;font-size:20px;}.hdr-title{font-size:0.95rem;}}
 .hero-banner{background:linear-gradient(135deg,var(--gd),var(--green));border-radius:20px;padding:20px;color:white;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
 .hero-banner h2{font-family:'Baloo 2',sans-serif;font-size:1.3rem;font-weight:900;}
 .hero-banner p{font-size:.82rem;opacity:.85;margin-top:4px;}
