@@ -104,19 +104,22 @@ export function SettingsPanel({ settings, onUpdate, onStart, onExit }: Props) {
         {/* Class Level */}
         <div style={card}>
           <div style={label}>🎓 Class Level</div>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:7}}>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10}}>
             {(Object.keys(CLASS_LABELS) as ClassLevel[]).map(lvl=>(
-              <motion.button key={lvl} whileTap={{scale:0.95}}
+              <motion.button key={lvl} whileTap={{scale:0.95}} whileHover={{scale:1.05}}
                 onClick={()=>onUpdate({classLevel:lvl})}
                 style={{
-                  padding:'10px 4px',borderRadius:12,cursor:'pointer',
+                  padding:'12px 8px',borderRadius:14,cursor:'pointer',
                   background: settings.classLevel===lvl
                     ? 'linear-gradient(135deg,#F5A623,#e67e22)'
                     : 'rgba(255,255,255,0.07)',
                   border: settings.classLevel===lvl
                     ? '2px solid #F5A623' : '2px solid rgba(255,255,255,0.12)',
                   color:'white',fontFamily:"'Baloo 2',sans-serif",
-                  fontWeight:900,fontSize:'0.85rem',
+                  fontWeight:900,fontSize:'0.9rem',
+                  minHeight:'44px',
+                  display:'flex',alignItems:'center',justifyContent:'center',
+                  transition:'all 0.2s',
                 }}>
                 {CLASS_LABELS[lvl]}
               </motion.button>
