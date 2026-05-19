@@ -48,6 +48,8 @@ export interface GameSettings {
   team2Name: string;
   team1Avatar?: string;
   team2Avatar?: string;
+  subject?: string;
+  questionsPerRound?: number;
 }
 
 export interface GameState {
