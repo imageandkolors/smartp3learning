@@ -43,6 +43,11 @@ export function DesktopTopbar(){
       </div>
       <input className="dtb-search" placeholder="🔍 Search…"/>
       <div className="dtb-actions">
+        <div className="view-mode-indicator" style={{display:'flex',alignItems:'center',gap:8,paddingRight:8,borderRight:'1px solid rgba(255,255,255,.2)'}}>
+          <span style={{fontSize:'.75rem',color:'rgba(255,255,255,.6)',fontWeight:600,textTransform:'uppercase'}}>
+            {viewMode==='mobile'?'📱 Mobile':viewMode==='tablet'?'📟 Tablet':'🖥️ Desktop'}
+          </span>
+        </div>
         <button className="dtb-btn" onClick={()=>{setScreen('k-pick');play('click');}}>⚡ Kahoot</button>
         <button className="dtb-btn" onClick={()=>{setScreen('games');play('click');}}>🎮 Games</button>
         <span className="dtb-btn dtb-pts">⭐ {totalPoints} pts</span>
