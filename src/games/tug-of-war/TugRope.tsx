@@ -50,8 +50,8 @@ export function TugRope({
 
         {/* Team 1 pullers — LEFT side, face right, lean back when pulling */}
         <div style={{position:'absolute',left:0,display:'flex',alignItems:'flex-end',gap:'clamp(2px,1vw,6px)',zIndex:2}}>
-          {team1Pullers.map((p,i)=>(
-            <motion.div key={i}
+          {team1Avatar ? (
+            <motion.div
               animate={team1Pulling
                 ? {rotate:-pullLean, x:[0,-4,0,-4,0]}
                 : {rotate:-8, x:0}}
@@ -62,29 +62,41 @@ export function TugRope({
                 transformOrigin:'bottom center',
                 filter:team1Pulling?`drop-shadow(0 0 8px ${team1Color})`:'none',
               }}>
-              {team1Avatar ? (
-                <img 
-                  src={team1Avatar} 
-                  alt="team1"
-                  style={{
-                    width:'clamp(40px,7vw,80px)',
-                    height:'clamp(40px,7vw,80px)',
-                    borderRadius:'8px',
-                    objectFit:'cover',
-                    border:`3px solid ${team1Color}`,
-                    boxShadow:`0 0 12px ${team1Color}55`,
-                  }}
-                />
-              ) : (
+              <img 
+                src={team1Avatar} 
+                alt={team1Name}
+                style={{
+                  width:'clamp(50px,8vw,90px)',
+                  height:'clamp(50px,8vw,90px)',
+                  borderRadius:'12px',
+                  objectFit:'cover',
+                  border:`3px solid ${team1Color}`,
+                  boxShadow:`0 0 16px ${team1Color}77`,
+                }}
+              />
+            </motion.div>
+          ) : (
+            team1Pullers.map((p,i)=>(
+              <motion.div key={i}
+                animate={team1Pulling
+                  ? {rotate:-pullLean, x:[0,-4,0,-4,0]}
+                  : {rotate:-8, x:0}}
+                transition={{duration:0.4,repeat:team1Pulling?3:0}}
+                style={{
+                  display:'inline-flex',
+                  alignItems:'flex-end',
+                  transformOrigin:'bottom center',
+                  filter:team1Pulling?`drop-shadow(0 0 8px ${team1Color})`:'none',
+                }}>
                 <div style={{
                   fontSize:'clamp(1.4rem,3.5vw,2.4rem)',
                   display:'inline-block',
                 }}>
                   {p}
                 </div>
-              )}
-            </motion.div>
-          ))}
+              </motion.div>
+            ))
+          )}
         </div>
 
         {/* Rope SVG */}
@@ -135,8 +147,8 @@ export function TugRope({
         {/* Team 2 pullers — RIGHT side, face left, lean back when pulling */}
         <div style={{position:'absolute',right:0,display:'flex',flexDirection:'row-reverse' as const,
           alignItems:'flex-end',gap:'clamp(2px,1vw,6px)',zIndex:2}}>
-          {team2Pullers.map((p,i)=>(
-            <motion.div key={i}
+          {team2Avatar ? (
+            <motion.div
               animate={team2Pulling
                 ? {rotate:pullLean, x:[0,4,0,4,0]}
                 : {rotate:8, x:0}}
@@ -147,21 +159,33 @@ export function TugRope({
                 transformOrigin:'bottom center',
                 filter:team2Pulling?`drop-shadow(0 0 8px ${team2Color})`:'none',
               }}>
-              {team2Avatar ? (
-                <img 
-                  src={team2Avatar} 
-                  alt="team2"
-                  style={{
-                    width:'clamp(40px,7vw,80px)',
-                    height:'clamp(40px,7vw,80px)',
-                    borderRadius:'8px',
-                    objectFit:'cover',
-                    border:`3px solid ${team2Color}`,
-                    boxShadow:`0 0 12px ${team2Color}55`,
-                    transform:'scaleX(-1)',
-                  }}
-                />
-              ) : (
+              <img 
+                src={team2Avatar} 
+                alt={team2Name}
+                style={{
+                  width:'clamp(50px,8vw,90px)',
+                  height:'clamp(50px,8vw,90px)',
+                  borderRadius:'12px',
+                  objectFit:'cover',
+                  border:`3px solid ${team2Color}`,
+                  boxShadow:`0 0 16px ${team2Color}77`,
+                  transform:'scaleX(-1)',
+                }}
+              />
+            </motion.div>
+          ) : (
+            team2Pullers.map((p,i)=>(
+              <motion.div key={i}
+                animate={team2Pulling
+                  ? {rotate:pullLean, x:[0,4,0,4,0]}
+                  : {rotate:8, x:0}}
+                transition={{duration:0.4,repeat:team2Pulling?3:0}}
+                style={{
+                  display:'inline-flex',
+                  alignItems:'flex-end',
+                  transformOrigin:'bottom center',
+                  filter:team2Pulling?`drop-shadow(0 0 8px ${team2Color})`:'none',
+                }}>
                 <div style={{
                   fontSize:'clamp(1.4rem,3.5vw,2.4rem)',
                   display:'inline-block',
@@ -169,9 +193,9 @@ export function TugRope({
                 }}>
                   {p}
                 </div>
-              )}
-            </motion.div>
-          ))}
+              </motion.div>
+            ))
+          )}
         </div>
       </div>
 

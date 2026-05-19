@@ -30,21 +30,47 @@ export function BottomNav(){
   return(<nav className="bottom-nav">{tabs.map(t=>(<button key={t.id} className={`nav-btn${active===t.id?' active':''}`} onClick={()=>go(t.id)}><motion.span className="nav-icon" animate={active===t.id?{scale:1.2}:{scale:1}}>{t.icon}</motion.span><span className="nav-label">{t.lbl}</span></button>))}</nav>);
 }
 
-/* ─── DESKTOP TOPBAR ──────────────────────────────── */
+/* ─── DESKTOP TOPBAR WITH HAMBURGER MENU ──────────────────────────────── */
 export function DesktopTopbar(){
-  const{totalPoints,toggleSidebar,setScreen}=useAppStore();const{play}=useSFX();
-  return(<header className="desktop-topbar">
-    <div className="dtb-brand-area">
-      <button className="dtb-ham" onClick={()=>{toggleSidebar();play('click');}}>☰</button>
-      <span className="dtb-brand-name">🎓 P3 Smart Learning</span>
-    </div>
-    <input className="dtb-search" placeholder="🔍 Search…"/>
-    <div className="dtb-actions">
-      <button className="dtb-btn" onClick={()=>{setScreen('k-pick');play('click');}}>⚡ Kahoot</button>
-      <button className="dtb-btn" onClick={()=>{setScreen('games');play('click');}}>🎮 Games</button>
-      <span className="dtb-btn dtb-pts">⭐ {totalPoints} pts</span>
-    </div>
-  </header>);
+  const{totalPoints,toggleSidebar,setScreen,viewMode,setViewMode}=useAppStore();const{play}=useSFX();
+  const[showMenu,setShowMenu]=useState(false);
+  const set=(m:'mobile'|'tablet'|'desktop')=>{play('click');setViewMode(m);document.body.className='mode-'+m+(useAppStore.getState().sidebarCollapsed?' sb-collapsed':'');setShowMenu(false);};
+  return(<>
+    <header className="desktop-topbar">
+      <div className="dtb-brand-area">
+        <motion.button className="dtb-ham" onClick={()=>{setShowMenu(!showMenu);play('click');}} whileHover={{scale:1.1}} whileTap={{scale:0.95}}>☰</motion.button>
+        <span className="dtb-brand-name">🎓 P3 Smart Learning</span>
+      </div>
+      <input className="dtb-search" placeholder="🔍 Search…"/>
+      <div className="dtb-actions">
+        <button className="dtb-btn" onClick={()=>{setScreen('k-pick');play('click');}}>⚡ Kahoot</button>
+        <button className="dtb-btn" onClick={()=>{setScreen('games');play('click');}}>🎮 Games</button>
+        <span className="dtb-btn dtb-pts">⭐ {totalPoints} pts</span>
+      </div>
+    </header>
+    <AnimatePresence>
+      {showMenu&&<motion.div className="hamburger-menu" initial={{opacity:0,y:-10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}} transition={{duration:0.2}}>
+        <div className="hmenu-section">
+          <div className="hmenu-label">View Mode</div>
+          {([['mobile','📱 Mobile'],['tablet','📟 Tablet'],['desktop','🖥️ Desktop']] as const).map(([m,lbl])=>(
+            <motion.button key={m} className={`hmenu-item${viewMode===m?' active':''}`} onClick={()=>set(m)} whileHover={{x:6}} whileTap={{scale:.95}}>
+              {lbl}
+            </motion.button>
+          ))}
+        </div>
+        <div className="hmenu-divider"/>
+        <div className="hmenu-section">
+          <div className="hmenu-label">Settings</div>
+          <motion.button className="hmenu-item" onClick={()=>{setScreen('home');play('nav');setShowMenu(false);}} whileHover={{x:6}}>
+            ⚙️ Settings
+          </motion.button>
+          <motion.button className="hmenu-item" onClick={()=>{setScreen('awards');play('nav');setShowMenu(false);}} whileHover={{x:6}}>
+            🏆 Achievements
+          </motion.button>
+        </div>
+      </motion.div>}
+    </AnimatePresence>
+  </>);
 }
 
 /* ─── DESKTOP SIDEBAR ─────────────────────────────── */
@@ -65,16 +91,12 @@ export function DesktopSidebar(){
   </motion.aside>);
 }
 
-/* ─── SIZE SWITCHER ───────────────────────────────── */
+/* ─── SIZE SWITCHER (HIDDEN - Now in hamburger menu) ───────────────────────────────── */
+// This component is no longer rendered directly
+// View mode controls are now integrated into DesktopTopbar hamburger menu
 export function SizeSwitcher(){
-  const{viewMode,setViewMode}=useAppStore();const{play}=useSFX();
-  const set=(m:'mobile'|'tablet'|'desktop')=>{play('click');setViewMode(m);document.body.className='mode-'+m+(useAppStore.getState().sidebarCollapsed?' sb-collapsed':'');};
-  return(<div className="size-sw">
-    <div className="sw-label">📐 View Mode</div>
-    {([['mobile','📱','Mobile'],['tablet','📟','Tablet'],['desktop','🖥️','Desktop']] as const).map(([m,icon,lbl])=>(
-      <motion.button key={m} className={`sw-btn${viewMode===m?' active':''}`} onClick={()=>set(m)} whileHover={{x:-4}} whileTap={{scale:.96}}>{icon} {lbl}</motion.button>
-    ))}
-  </div>);
+  // Component kept for backward compatibility but not rendered
+  return null;
 }
 
 /* ─── SPLASH ──────────────────────────────────────── */

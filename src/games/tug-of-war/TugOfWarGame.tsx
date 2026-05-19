@@ -279,7 +279,11 @@ export function TugOfWarGame({ onGameComplete, onExit }: Props) {
       </div>
 
       {/* Global toast */}
-      <Toast msg={state.toastMsg} visible={state.toastVisible && state.phase==='playing'}/>
+      <AnimatePresence mode="wait">
+        {state.toastVisible && state.phase==='playing' && (
+          <Toast key={`toast-${state.toastMsg}-${Date.now()}`} msg={state.toastMsg} visible={true}/>
+        )}
+      </AnimatePresence>
 
       {/* Round result */}
       <AnimatePresence>
