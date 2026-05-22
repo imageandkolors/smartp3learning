@@ -100,9 +100,11 @@ export function TeamSide({
       borderRadius:18,
       border:`2px solid ${isActive ? color+'66' : 'rgba(255,255,255,0.07)'}`,
       transition:'all 0.3s',
-      position:'relative', overflow:'hidden',
+      position:'relative', overflow:'auto',
       minWidth:0,
       maxWidth:isMobile ? '100%' : 'none',
+      maxHeight: '100%',
+      scrollBehavior: 'smooth',
     }}>
       {/* Active pulse bg */}
       {isActive && (

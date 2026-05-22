@@ -168,15 +168,15 @@ export function SettingsPanel({ settings, onUpdate, onStart, onExit }: Props) {
         {/* Questions Per Round */}
         <div style={card}>
           <div style={label}>📋 Questions per Round</div>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:6}}>
-            {[3,4,5,6].map(q=>(
+          <div style={{display:'grid',gridTemplateColumns:'repeat(5,1fr)',gap:6}}>
+            {[5,8,10,15,20].map(q=>(
               <motion.button key={q} whileTap={{scale:0.95}}
                 onClick={()=>onUpdate({questionsPerRound:q})}
                 style={{
                   padding:'8px 4px',borderRadius:10,cursor:'pointer',
                   background: settings.questionsPerRound===q ? '#4FC3F7' : 'rgba(255,255,255,0.07)',
                   border: settings.questionsPerRound===q ? '2px solid #4FC3F7' : '2px solid rgba(255,255,255,0.12)',
-                  color:'white',fontFamily:"'Baloo 2',sans-serif",fontWeight:900,fontSize:'0.85rem',
+                  color:'white',fontFamily:"'Baloo 2',sans-serif",fontWeight:900,fontSize:'0.8rem',
                 }}>
                 {q}Qs
               </motion.button>

@@ -11,6 +11,7 @@ import { TeamSide } from './TeamSide';
 import { RoundResultOverlay, MatchOverOverlay, Toast } from './WinScreen';
 import { GameLeaderboard } from './GameLeaderboard';
 import { useSFX } from '../../hooks/useSFX';
+import { useTheme } from '../../context/ThemeContext';
 import type { TeamId } from './tugTypes';
 
 interface Props {
@@ -25,6 +26,7 @@ export function TugOfWarGame({ onGameComplete, onExit }: Props) {
   const countRef    = useRef<ReturnType<typeof setInterval>|null>(null);
   const toastTimer  = useRef<ReturnType<typeof setTimeout>|null>(null);
   const { play, speak } = useSFX();
+  const { theme, toggleTheme } = useTheme();
 
   const t1 = { ...TEAM_CONFIGS[0], name: state.settings.team1Name };
   const t2 = { ...TEAM_CONFIGS[1], name: state.settings.team2Name };
@@ -68,6 +70,30 @@ export function TugOfWarGame({ onGameComplete, onExit }: Props) {
       dispatch({ type: 'SUBMIT_ANSWER', team: state.round.activeTeam });
     }
   }, [state.round.timeLeft, state.phase]);
+
+  // ── Answer feedback sounds (correct/wrong) ───────────────────────────────
+  useEffect(() => {
+    if (state.phase === 'playing') {
+      const team1LastCorrect = state.teams.team1.lastAnswerCorrect;
+      const team2LastCorrect = state.teams.team2.lastAnswerCorrect;
+      
+      if (team1LastCorrect === true) play('clap');
+      else if (team1LastCorrect === false) play('wrong');
+      
+      if (team2LastCorrect === true) play('clap');
+      else if (team2LastCorrect === false) play('wrong');
+    }
+  }, [state.teams.team1.lastAnswerCorrect, state.teams.team2.lastAnswerCorrect, state.phase, play]);
+
+  // ── Question reading (auto-read new questions) ────────────────────────────
+  useEffect(() => {
+    if (state.phase === 'playing' && state.round.question) {
+      const question = state.round.question.question || '';
+      if (question && state.round.turnCount === 0) {
+        setTimeout(() => speak(question, 0.9, 1.0), 500);
+      }
+    }
+  }, [state.round.question, state.round.turnCount, state.phase, speak]);
 
   // ── Audio feedback for answers ────────────────────────────────────────────
   useEffect(() => {
@@ -153,7 +179,7 @@ export function TugOfWarGame({ onGameComplete, onExit }: Props) {
     );
   }
 
-  // ── Countdown screen ───────────────────────────────────────────────────────
+  // ── Countdown screen ────────────────────────────────────��──────────────────
   if (state.phase === 'countdown') {
     return (
       <div style={{
