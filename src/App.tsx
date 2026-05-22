@@ -24,9 +24,34 @@ const SCREEN_MAP: Record<string, React.FC> = {
 };
 
 export default function App() {
-  const { screen, viewMode, sidebarCollapsed, selectedGrade } = useAppStore();
+  const { screen, viewMode, sidebarCollapsed, selectedGrade, setViewMode } = useAppStore();
   const isDesktop = viewMode === 'desktop';
   const showGradeSelector = !selectedGrade;
+
+  useEffect(() => {
+    // Auto-detect viewport size and set appropriate mode
+    const handleResize = () => {
+      const width = window.innerWidth;
+      let newMode: 'mobile' | 'tablet' | 'desktop' = 'desktop';
+      
+      if (width < 768) {
+        newMode = 'mobile';
+      } else if (width < 1280) {
+        newMode = 'tablet';
+      }
+      
+      if (newMode !== viewMode) {
+        setViewMode(newMode);
+      }
+    };
+
+    // Check on initial load
+    handleResize();
+
+    // Listen for resize events
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [viewMode, setViewMode]);
 
   useEffect(() => {
     let cls = 'mode-' + viewMode;
