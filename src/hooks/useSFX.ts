@@ -12,6 +12,7 @@ export function useSFX(){
     switch(name){
       case'click':   tone(600,'sine',.06,.15);break;
       case'correct': [523,659,784,1047].forEach((f,i)=>tone(f,'sine',.12,.25,i*.1));break;
+      case'clap':    noise(.3,.25);break;
       case'wrong':   [200,150].forEach((f,i)=>tone(f,'sawtooth',.1,.2,i*.1));break;
       case'timeout': [300,250,200].forEach((f,i)=>tone(f,'square',.07,.2,i*.08));break;
       case'tick':    tone(800,'square',.04,.07);break;
@@ -35,7 +36,9 @@ export function useSFX(){
   const speak=useCallback((text:string,rate=1,pitch=1.2)=>{
     if(!window.speechSynthesis)return;
     window.speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(text);
+    // Replace underscores with dashes for proper speech
+    const cleanText = text.replace(/_/g, ' dash ').replace(/-/g, ' dash ');
+    const u=new SpeechSynthesisUtterance(cleanText);
     u.rate=rate;u.pitch=pitch;u.volume=.85;
     const vs=window.speechSynthesis.getVoices();
     const v=vs.find(v=>v.lang.startsWith('en')&&v.name.includes('Google'))||vs[0];

@@ -9,7 +9,7 @@ export const DEFAULT_SETTINGS = {
   classLevel: 'P3' as const,
   team1Name: 'Blue Team',
   team2Name: 'Red Team',
-  questionsPerRound: 5,
+  questionsPerRound: 10,
 };
 
 const makeTeam = () => ({
