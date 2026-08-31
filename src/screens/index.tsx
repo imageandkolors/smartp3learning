@@ -5,6 +5,7 @@ import { useSFX } from '../hooks/useSFX';
 import { useToast, checkAnswer, shuffle, makeFakes, launchConfetti } from '../utils/helpers';
 import { SUBJECTS } from '../data/questions';
 import type { Question } from '../data/questions';
+import { CURRICULUM_BY_GRADE, TERMS, type Term } from '../data/curriculum';
 import { TugOfWarGame } from '../games/tug-of-war/TugOfWarGame';
 
 /* ─── helpers ─────────────────────────────────────── */
@@ -17,6 +18,15 @@ const fadeUp={hidden:{opacity:0,y:20},show:{opacity:1,y:0,transition:{type:'spri
 const LETTERS=['A','B','C','D'];
 const K_SHAPES=['▲','■','●','✦'];
 const K_COLS=['kr','kb','ky','kg'];
+const CURRICULUM_PATHS=[
+  {icon:'📐',name:'Mathematics',objective:'Use numbers, money, measurement and shapes in everyday problems.',topics:['Place value','Fractions','₦ Money','Time & measurement'],reasoning:'Quantitative Reasoning: number patterns, series, estimation, logic, comparison and word problems.'},
+  {icon:'📖',name:'English Studies',objective:'Read, understand and express ideas with clear sentences.',topics:['Comprehension','Grammar','Spelling','Vocabulary'],reasoning:'Verbal Reasoning: analogies, odd-one-out, letter patterns, sequencing, vocabulary and comprehension.'},
+  {icon:'🔬',name:'Basic Science & Technology',objective:'Observe living things, materials, health and the world around us.',topics:['Plants & animals','Matter','Human body','ICT']},
+  {icon:'🌍',name:'National Values & Social Studies',objective:'Understand family, community, Nigeria and responsible citizenship.',topics:['Family & community','Nigeria','Civic education','Environment']},
+  {icon:'🎨',name:'Culture & Creative Arts',objective:'Explore creativity, culture, music, movement and visual expression.',topics:['Drawing','Craft','Music','Nigerian culture'],planned:true},
+  {icon:'🗣️',name:'Nigerian Languages',objective:'Build confidence with familiar words and expressions in a Nigerian language.',topics:['Hausa','Igbo','Yorùbá','Everyday phrases'],planned:true},
+];
+function MasteryLabel({pct}:{pct:number}){return <span className={`mastery-label ${pct>=80?'secure':pct>0?'practising':'starting'}`}>{pct>=80?'Secure':pct>0?'Practising':'Starting'}</span>}
 
 /* ─── STATUS BAR ──────────────────────────────────── */
 export function StatusBar(){const t=useClock();return(<div className="status-bar"><span>{t}</span><div style={{display:'flex',gap:4}}><span>📶</span><span>🔋</span></div></div>);}
@@ -165,21 +175,30 @@ export function HomeScreen(){
 
 /* ─── SUBJECTS ────────────────────────────────────── */
 export function SubjectsScreen(){
-  const{setScreen,progress}=useAppStore();const{play}=useSFX();
+  const{setScreen,progress,selectedGrade}=useAppStore();const{play}=useSFX();
+  const[term,setTerm]=useState<Term>('Third Term');
+  const gradeNumber=Number(selectedGrade?.slice(1)||3);
+  const plans=CURRICULUM_BY_GRADE[gradeNumber]?.[term]||CURRICULUM_BY_GRADE[3][term];
   return(<div className="screen" style={{position:'absolute',inset:0,display:'flex',flexDirection:'column',background:'var(--bg)'}}>
-    <div className="app-header"><div style={{flex:1}}/><div className="hdr-title">📚 All Subjects</div><div style={{width:38}}/></div>
+    <div className="app-header"><div style={{flex:1}}/><div className="hdr-title">📚 Primary {gradeNumber} Curriculum</div><div style={{width:38}}/></div>
     <div className="scroll-c pad">
-      <p style={{fontSize:'.8rem',color:'var(--soft)',marginBottom:14,fontWeight:600}}>Primary 3 · 3rd Term · Nigerian Curriculum</p>
+      <div className="curriculum-intro"><div><div className="section-lbl">Nigerian Basic Education Curriculum</div><h3>Primary {gradeNumber} learning plan</h3><p>Explore the scope for each school term. Playable question banks are marked on the subject cards below.</p></div><div className="grade-pill">P{gradeNumber}</div></div>
+      <div className="term-tabs" role="tablist" aria-label="School term"><div className="term-tabs-label">Choose term</div>{TERMS.map(item=><button key={item} className={`term-tab${term===item?' active':''}`} onClick={()=>{setTerm(item);play('click');}}>{item}</button>)}</div>
       <motion.div className="subjects-grid" variants={stagger} initial="hidden" animate="show">
         {SUBJECTS.map(s=>{const done=progress[s.id]||0;const pct=Math.round(done/s.questions.length*100);return(
           <motion.div key={s.id} className="subj-card" style={{background:s.grad}} variants={fadeUp} onClick={()=>{play('click');useAppStore.setState({cbtSubject:s});setScreen('subj-detail');}} whileHover={{scale:1.03}} whileTap={{scale:.97}}>
             <span className="subj-icon">{s.icon}</span><div className="subj-name">{s.name}</div>
-            <div className="subj-count">{s.questions.length} questions</div>
+            <div className="subj-count">{s.questions.length} playable questions</div>
             {pct>0&&<div style={{width:'100%',background:'rgba(255,255,255,.2)',borderRadius:20,height:4}}><div style={{width:`${pct}%`,background:'white',height:4,borderRadius:20}}/></div>}
-            <div className="subj-tag">{pct>0?`${pct}% done`:s.term}</div>
+            <div className="subj-tag">{pct>0?`${pct}% done`:'Open module'}</div><MasteryLabel pct={pct}/>
           </motion.div>
         );})}
       </motion.div>
+      <div className="term-scope-panel"><div className="scope-heading"><div><div className="section-lbl">Primary {gradeNumber} · {term}</div><h3>What learners will study</h3></div><span className="scope-note">Scope & sequence</span></div><div className="scope-grid">{plans.map(item=><div key={item.subject} className="scope-card"><div className="scope-card-head"><strong>{item.subject}</strong><span>{item.topics.length} strands</span></div><p>{item.focus}</p><div className="scope-topics">{item.topics.map(topic=><span key={topic}>{topic}</span>)}</div></div>)}</div></div>
+      <div className="learning-path-panel">
+        <div className="path-heading"><div><div className="section-lbl">Learning path</div><p>Choose a skill, practise it, then play a game to lock it in.</p></div><span className="path-loop">Learn → Practise → Play → Review</span></div>
+        <div className="path-grid">{CURRICULUM_PATHS.map(path=><div key={path.name} className={`path-card${path.planned?' planned':''}`}><div className="path-card-top"><span className="path-icon">{path.icon}</span>{path.planned&&<span className="planned-tag">Coming next</span>}</div><strong>{path.name}</strong><p>{path.objective}</p><div className="topic-chips">{path.topics.map(topic=><span key={topic}>{topic}</span>)}</div>{path.reasoning&&<div className="reasoning-focus"><span>Reasoning focus</span>{path.reasoning}</div>}</div>)}</div>
+      </div>
     </div>
   </div>);
 }
@@ -189,6 +208,7 @@ export function SubjectDetailScreen(){
   const{cbtSubject,setScreen,startCbt,progress}=useAppStore();const{play}=useSFX();
   const s=cbtSubject;if(!s)return null;
   const done=progress[s.id]||0;const pct=Math.round(done/s.questions.length*100);
+  const path=CURRICULUM_PATHS.find(item=>item.name===s.name||item.name.startsWith(s.name)||s.name.startsWith(item.name));
   return(<div className="screen" style={{position:'absolute',inset:0,display:'flex',flexDirection:'column',background:'var(--bg)'}}>
     <div className="app-header" style={{background:s.color}}>
       <button className="hdr-back" onClick={()=>{play('nav');setScreen('subjects');}}>‹</button>
@@ -202,7 +222,8 @@ export function SubjectDetailScreen(){
       <p style={{fontSize:'.78rem',marginTop:6,opacity:.8}}>{done}/{s.questions.length} completed · {pct}%</p>
     </motion.div>
     <div className="scroll-c pad">
-      <div className="section-lbl" style={{marginTop:4}}>Choose Mode</div>
+      <div className="subject-objective"><div className="objective-kicker">Today’s learning goal</div><strong>{path?.objective||`Build confidence with ${s.description.toLowerCase()}.`}</strong>{path?.reasoning&&<div className="reasoning-focus"><span>Reasoning strand</span>{path.reasoning}</div>}<div className="objective-loop"><span>1. Learn</span><span>2. Practise</span><span>3. Play</span><span>4. Review</span></div></div>
+      <div className="section-lbl" style={{marginTop:16}}>Choose Mode</div>
       {[{icon:'📝',l:'CBT Exam Mode',sub:'Answer all questions at your own pace. Instant step-by-step explanations.',c:s.grad,fn:()=>{play('start');startCbt(s);setScreen('cbt');}},{icon:'⚡',l:'Kahoot Speed Battle',sub:'Race the clock! 20 sec/question. Earn up to 1000 points!',c:'linear-gradient(135deg,#e91e8c,#ad1457)',fn:()=>{play('start');useAppStore.setState({kSubject:s});setScreen('k-lobby');}}].map(m=>(
         <motion.div key={m.l} className="card" style={{display:'flex',alignItems:'center',gap:16,cursor:'pointer',marginBottom:12}} onClick={m.fn} whileHover={{scale:1.02,boxShadow:'0 8px 24px rgba(0,0,0,.1)'}} whileTap={{scale:.98}}>
           <div style={{width:52,height:52,borderRadius:14,background:m.c,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'1.5rem',flexShrink:0}}>{m.icon}</div>

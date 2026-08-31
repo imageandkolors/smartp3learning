@@ -642,3 +642,67 @@ body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-r
   body.mode-desktop .games-grid{grid-template-columns:repeat(4,1fr);}
   body.mode-desktop .badges-grid{grid-template-columns:repeat(5,1fr);}
 }
+
+/* ─── CURRICULUM ROADMAP ─────────────────────────── */
+.learning-path-panel{margin:8px 16px 22px;padding:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-xl);}
+.path-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:16px;}
+.path-heading .section-lbl{margin-bottom:4px;color:var(--text);}
+.path-heading p{margin:0;color:var(--soft);font-size:.76rem;line-height:1.45;max-width:360px;}
+.path-loop{font-size:.65rem;font-weight:800;letter-spacing:.04em;color:var(--gold);background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.22);border-radius:999px;padding:7px 10px;white-space:nowrap;}
+.path-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.path-card{padding:14px;border-radius:14px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.07);min-height:150px;}
+.path-card.planned{opacity:.78;border-style:dashed;}
+.path-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+.path-icon{font-size:1.4rem;}
+.planned-tag{font-size:.56rem;color:var(--gold);font-weight:800;text-transform:uppercase;letter-spacing:.04em;}
+.path-card strong{font-size:.78rem;color:var(--text);display:block;margin-bottom:5px;}
+.path-card p{font-size:.68rem;line-height:1.4;color:var(--soft);margin:0 0 10px;}
+.topic-chips{display:flex;gap:5px;flex-wrap:wrap;}
+.topic-chips span{font-size:.57rem;color:var(--soft);background:rgba(0,0,0,.12);border-radius:999px;padding:4px 6px;}
+.mastery-label{display:inline-block;font-size:.56rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;border-radius:999px;padding:3px 6px;margin-top:2px;width:max-content;}
+.mastery-label.starting{color:var(--soft);background:rgba(255,255,255,.1);}
+.mastery-label.practising{color:#ffe6a8;background:rgba(245,166,35,.18);}
+.mastery-label.secure{color:#b7f5d5;background:rgba(22,160,133,.2);}
+@media(max-width:900px){.path-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.path-heading{display:block}.path-loop{display:inline-block;margin-top:10px}.path-grid{grid-template-columns:1fr}.learning-path-panel{margin-left:12px;margin-right:12px;padding:14px;}}
+
+/* ─── SUBJECT LEARNING GOAL ───────────────────────── */
+.subject-objective{background:linear-gradient(135deg,rgba(0,135,81,.1),rgba(41,128,185,.08));border:1px solid rgba(0,135,81,.16);border-radius:var(--radius-xl);padding:16px;margin-bottom:4px;}
+.objective-kicker{font-size:.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--green);margin-bottom:6px;}
+.subject-objective strong{display:block;font-size:.88rem;line-height:1.45;color:var(--text);max-width:620px;}
+.objective-loop{display:flex;flex-wrap:wrap;gap:6px;margin-top:13px;}
+.objective-loop span{font-size:.62rem;font-weight:800;color:var(--soft);background:var(--card);border:1px solid var(--border);border-radius:999px;padding:5px 8px;}
+.objective-loop span:first-child{color:var(--green);border-color:rgba(0,135,81,.25);}
+@media(max-width:600px){.subject-objective{padding:14px}.objective-loop{gap:5px}.objective-loop span{font-size:.58rem;padding:5px 7px;}}
+
+/* ─── REASONING STRAND CALLOUTS ──────────────────── */
+.reasoning-focus{margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.1);font-size:.62rem;line-height:1.42;color:var(--soft);}
+.reasoning-focus span{display:block;color:var(--green);font-size:.57rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
+.subject-objective .reasoning-focus{border-top-color:rgba(0,135,81,.14);color:var(--text-soft,var(--soft));}
+@media(max-width:600px){.reasoning-focus{font-size:.6rem;}}
+
+/* ─── GRADE + TERM CURRICULUM SCOPE ──────────────── */
+.curriculum-intro{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;background:linear-gradient(135deg,rgba(0,135,81,.1),rgba(41,128,185,.08));border:1px solid rgba(0,135,81,.14);border-radius:var(--radius-xl);padding:16px;margin-bottom:12px;}
+.curriculum-intro .section-lbl{margin-bottom:4px;color:var(--green);}
+.curriculum-intro h3{font-size:1.05rem;color:var(--text);}
+.curriculum-intro p{font-size:.72rem;color:var(--soft);line-height:1.45;margin-top:5px;max-width:520px;}
+.grade-pill{font-size:1.1rem;font-weight:900;color:white;background:var(--green);border-radius:12px;padding:10px 12px;box-shadow:var(--shadow-md);}
+.term-tabs{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 16px 16px;}
+.term-tabs-label{font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--soft);margin-right:3px;}
+.term-tab{border:1px solid var(--border);background:var(--card);color:var(--soft);border-radius:999px;padding:8px 12px;font-size:.72rem;font-weight:800;cursor:pointer;transition:all .2s;}
+.term-tab:hover{border-color:var(--green);color:var(--green);}
+.term-tab.active{background:var(--green);border-color:var(--green);color:white;box-shadow:0 5px 12px rgba(0,135,81,.2);}
+.term-scope-panel{margin:8px 16px 18px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:16px;box-shadow:var(--shadow-subtle);}
+.scope-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;}
+.scope-heading .section-lbl{margin-bottom:4px;color:var(--green);}
+.scope-heading h3{font-size:1rem;color:var(--text);}
+.scope-note{font-size:.6rem;color:var(--soft);font-weight:800;border:1px solid var(--border);border-radius:999px;padding:6px 8px;white-space:nowrap;}
+.scope-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.scope-card{padding:12px;border-radius:14px;background:var(--bg);border:1px solid var(--border);}
+.scope-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.scope-card strong{font-size:.78rem;color:var(--text);}
+.scope-card-head span{font-size:.56rem;color:var(--green);font-weight:800;white-space:nowrap;}
+.scope-card p{font-size:.65rem;line-height:1.4;color:var(--soft);margin:5px 0 9px;}
+.scope-topics{display:flex;gap:5px;flex-wrap:wrap;}
+.scope-topics span{font-size:.58rem;line-height:1.2;color:var(--text);background:var(--card);border:1px solid var(--border);border-radius:999px;padding:5px 7px;}
+@media(max-width:600px){.curriculum-intro{padding:14px}.curriculum-intro h3{font-size:.95rem}.term-tabs{margin-left:12px;margin-right:12px}.term-tabs-label{width:100%}.scope-grid{grid-template-columns:1fr}.term-scope-panel{margin-left:12px;margin-right:12px;padding:14px}.scope-heading{display:block}.scope-note{display:inline-block;margin-top:8px;}}
